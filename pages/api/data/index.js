@@ -1,3 +1,4 @@
+import User from "@/models/User";
 import connectDB from "@/utils/connectDB";
 
 export default async function handler(req, res) {
@@ -10,6 +11,11 @@ export default async function handler(req, res) {
     if (!name || name.length <= 3) {
       res.status(422).json({ status: "failed", message: "invalid data" });
     }
+
+    // const user = new User({ name });
+    // await user.save();
+
+    const user = await User.create({ name });
 
     res
       .status(201)
