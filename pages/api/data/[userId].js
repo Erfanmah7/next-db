@@ -13,16 +13,30 @@ export default async function handler(req, res) {
     });
     return;
   }
-
-  try {
-    const id = req.query.userId;
-    const user = await User.findById(id);
-    res.status(200).json({ status: "success", data: user });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({
-      status: "failed",
-      message: "error in retreving data in database",
-    });
+  const id = req.query.userId;
+  if (req.method === "GET") {
+    try {
+      const user = await User.findById(id);
+      res.status(200).json({ status: "success", data: user });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        status: "failed",
+        message: "error in retreving data in database",
+      });
+    }
+  } else if (req.method === "PATCH") {
+    try {
+      const userData = await User.findById(id);
+      userData.email = req.body.email;
+      await userData.save();
+      res.status(200).json({ status: "success", data: userData });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        status: "failed",
+        message: "error in updating data in database",
+      });
+    }
   }
 }
