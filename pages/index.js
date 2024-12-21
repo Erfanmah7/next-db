@@ -20,6 +20,12 @@ export default function Home() {
     console.log(data);
   };
 
+  const detailsHandler = (id) => {
+    fetch(`api/data/${id}`)
+      .then((res) => res.json())
+      .then((data) => console.log(data.data));
+  };
+
   return (
     <>
       <h1>DB</h1>
@@ -32,7 +38,12 @@ export default function Home() {
       <div>
         <ul>
           {users.map((user) => (
-            <li key={user._id}>{user.name}</li>
+            <li key={user._id}>
+              <h3>{user.name}</h3>
+              <button onClick={() => detailsHandler(user._id)}>
+                Log details
+              </button>
+            </li>
           ))}
         </ul>
       </div>
